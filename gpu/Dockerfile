@@ -1,5 +1,5 @@
 # https://github.com/lianshufeng/docker_openpose
-FROM nvidia/cuda:11.7.0-runtime-ubuntu22.04
+FROM nvidia/cuda:11.7.0-devel-ubuntu22.04
 
 #get deps
 RUN apt-get update && \
