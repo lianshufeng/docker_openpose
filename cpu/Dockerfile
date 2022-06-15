@@ -23,7 +23,7 @@ WORKDIR openpose
 
 # Latest commit as of 18 Jan 22.
 # Change if you need to, but be aware that dependencies may have changed.
-RUN git checkout 6f0b8868bc4833b4a6156f020dd6d486dcf8a976
+# RUN git checkout 6f0b8868bc4833b4a6156f020dd6d486dcf8a976
 
 WORKDIR scripts/ubuntu
 
