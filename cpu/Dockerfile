@@ -1,27 +1,55 @@
-# https://github.com/lianshufeng/docker_openpose
-FROM ubuntu:22.04
+FROM ubuntu:18.04
 
-#get deps
-RUN apt-get update && \
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-python3-dev python3-pip python3-setuptools git g++ wget make libprotobuf-dev protobuf-compiler libopencv-dev \
-libgoogle-glog-dev libboost-all-dev libhdf5-dev libatlas-base-dev
+LABEL version="1.1"
 
-#for python api
-RUN pip3 install --upgrade pip
-RUN pip3 install numpy opencv-python 
+ENV DEBIAN_FRONTEND=noninteractive
 
-#replace cmake as old version has CUDA variable bugs
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
-tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
-rm cmake-3.16.0-Linux-x86_64.tar.gz
-ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+        wget apt-utils lsb-core cmake git \
+        libopencv-dev \
+        protobuf-compiler \
+        libprotobuf-dev \
+        libgoogle-glog-dev \
+        libboost-all-dev \
+        hdf5-tools \
+        libhdf5-dev \
+        libatlas-base-dev
 
-#get openpose
-WORKDIR /openpose
-RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git .
+RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
 
-#build it
+WORKDIR openpose
+
+# Latest commit as of 18 Jan 22.
+# Change if you need to, but be aware that dependencies may have changed.
+RUN git checkout 6f0b8868bc4833b4a6156f020dd6d486dcf8a976
+
+WORKDIR scripts/ubuntu
+
+RUN sed -i 's/\<sudo -H\>//g' install_deps.sh; \
+    sed -i 's/\<sudo\>//g' install_deps.sh; \
+    sync; sleep 1;
+
 WORKDIR /openpose/build
-RUN cmake -DBUILD_PYTHON=ON .. && make -j `nproc`
+
+# Downloads all available models. You can reduce image size by being more selective.
+RUN cmake -DGPU_MODE:String=CPU_ONLY \
+          -DOWNLOAD_BODY_25_MODEL:Bool=ON \
+          -DDOWNLOAD_BODY_MPI_MODEL:Bool=ON \
+          -DDOWNLOAD_BODY_COCO_MODEL:Bool=ON \
+          -DDOWNLOAD_FACE_MODEL:Bool=ON \
+          -DDOWNLOAD_HAND_MODEL:Bool=ON \
+          -DUSE_MKL:Bool=OFF \
+          ..
+
+# you may find that you need to adjust this.
+RUN make -j$((`nproc`+1))
+
+RUN apt-get remove wget unzip cmake git build-essential -y && apt-get autoremove -y
+
 WORKDIR /openpose
+
+ENTRYPOINT ["build/examples/openpose/openpose.bin"]
+
+CMD ["--help"]
