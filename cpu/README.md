@@ -38,12 +38,12 @@ To test the container:
 
 ```sh
 # basic usage, runs --help
-$ docker run seancook/openpose-cpu:latest
+$ docker run lianshufeng/openpose:latest
 ```
 
 To perform inference on a directory of images:
 
 ```sh
 # performs inference using example images and saves them to working directory
-$ docker run -v`pwd`:/data -it seancook/openpose-cpu -display 0 -image_dir /data -write_images /data
+$ docker run -v`pwd`:/data -it lianshufeng/openpose:latest -display 0 -image_dir /data -write_images /data
 ```
