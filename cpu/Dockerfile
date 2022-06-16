@@ -40,7 +40,7 @@ RUN cmake -DGPU_MODE:String=CPU_ONLY \
           -DDOWNLOAD_BODY_COCO_MODEL:Bool=ON \
           -DDOWNLOAD_FACE_MODEL:Bool=ON \
           -DDOWNLOAD_HAND_MODEL:Bool=ON \
-          -DUSE_MKL:Bool=OFF \
+          -DUSE_MKL:Bool=ON \
           ..
 
 # you may find that you need to adjust this.
