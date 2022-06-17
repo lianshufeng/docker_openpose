@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y \
-        wget apt-utils lsb-core cmake git \
+        wget apt-utils lsb-core git \
         libopencv-dev \
         protobuf-compiler \
         libprotobuf-dev \
@@ -16,6 +16,14 @@ RUN apt-get update -y && \
         hdf5-tools \
         libhdf5-dev \
         libatlas-base-dev
+
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
+tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
+rm cmake-3.16.0-Linux-x86_64.tar.gz
+ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
+
+
 
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
 
