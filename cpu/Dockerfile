@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL version="1.1"
 
@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y \
-        wget apt-utils lsb-core git \
+        wget apt-utils lsb-core cmake git \
         libopencv-dev \
         protobuf-compiler \
         libprotobuf-dev \
@@ -18,10 +18,10 @@ RUN apt-get update -y && \
         libatlas-base-dev
 
 
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
-tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
-rm cmake-3.16.0-Linux-x86_64.tar.gz
-ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
+# RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
+# tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
+# rm cmake-3.16.0-Linux-x86_64.tar.gz
+# ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
 
 
 
@@ -48,7 +48,7 @@ RUN cmake -DGPU_MODE:String=CPU_ONLY \
           -DDOWNLOAD_BODY_COCO_MODEL:Bool=ON \
           -DDOWNLOAD_FACE_MODEL:Bool=ON \
           -DDOWNLOAD_HAND_MODEL:Bool=ON \
-          -DUSE_MKL:Bool=ON \
+          -DUSE_MKL:Bool=OFF \
           ..
 
 # you may find that you need to adjust this.
