@@ -21,10 +21,7 @@ Pull down the Dockerfile. Then run:
 $ docker build . -f Dockerfile.cpuonly -t "lianshufeng/openpose"
 ```
 
-## Troubleshooting
 
-* If you experience issues while running the the `make` command, please lower the number of jobs to something that makes sense for your machine. See [discussion here](https://github.com/seancook/docker-openpose-cpu/pull/2). Thanks to `jonathanmv` for pointing this out.
-* If you change the commit hash to use (line 28 of the Dockerfile), be aware that dependencies have likely changed so you should update the dependencies installed at the start of the file.
 
 ## Usage
 
@@ -32,7 +29,6 @@ $ docker build . -f Dockerfile.cpuonly -t "lianshufeng/openpose"
 
 ### A note about memory
 
-If you run the container and see the message 'Killed', or it silently fails, you need to update the available memory for docker containers. [See here for more information](https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container).
 
 To test the container:
 
