@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04 as builder
 
 LABEL version="1.1"
 
@@ -18,28 +18,17 @@ RUN apt-get update -y && \
         libatlas-base-dev
 
 
-# RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
-# tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
-# rm cmake-3.16.0-Linux-x86_64.tar.gz
-# ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
-
-
 
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
 
 WORKDIR openpose
 
-# Latest commit as of 18 Jan 22.
-# Change if you need to, but be aware that dependencies may have changed.
-# RUN git checkout 6f0b8868bc4833b4a6156f020dd6d486dcf8a976
 
 WORKDIR scripts/ubuntu
 
 RUN sed -i 's/\<sudo -H\>//g' install_deps.sh; \
     sed -i 's/\<sudo\>//g' install_deps.sh; \
     sync; sleep 1;
-
-WORKDIR /openpose/build
 
 # Downloads all available models. You can reduce image size by being more selective.
 RUN cmake -DGPU_MODE:String=CPU_ONLY \
@@ -48,14 +37,30 @@ RUN cmake -DGPU_MODE:String=CPU_ONLY \
           -DDOWNLOAD_BODY_COCO_MODEL:Bool=ON \
           -DDOWNLOAD_FACE_MODEL:Bool=ON \
           -DDOWNLOAD_HAND_MODEL:Bool=ON \
-          -DUSE_MKL:Bool=ON \
+          -DUSE_MKL:Bool=OFF \
           ..
 
 # you may find that you need to adjust this.
 RUN make -j$((`nproc`+1))
 
-RUN apt-get remove wget unzip cmake git build-essential -y && apt-get autoremove -y
+# RUN apt-get remove wget unzip cmake git build-essential -y && apt-get autoremove -y
 
+FROM ubuntu:22.04 as runtime
+COPY --from=builder /openpose/models /openpose/models
+COPY --from=builder /openpose/build /openpose/build
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+        libopencv-dev \
+        protobuf-compiler \
+        libprotobuf-dev \
+        libgoogle-glog-dev \
+        libboost-all-dev \
+        hdf5-tools \
+        libhdf5-dev \
+        libatlas-base-dev
+		
 WORKDIR /openpose
 
 ENTRYPOINT ["build/examples/openpose/openpose.bin"]
