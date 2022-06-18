@@ -21,16 +21,13 @@ RUN apt-get update -y && \
 
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
 
-WORKDIR openpose
-
-
-WORKDIR scripts/ubuntu
-
+WORKDIR /openpose/scripts/ubuntu
 RUN sed -i 's/\<sudo -H\>//g' install_deps.sh; \
     sed -i 's/\<sudo\>//g' install_deps.sh; \
     sync; sleep 1;
 
 # Downloads all available models. You can reduce image size by being more selective.
+WORKDIR /openpose/build
 RUN cmake -DGPU_MODE:String=CPU_ONLY \
           -DOWNLOAD_BODY_25_MODEL:Bool=ON \
           -DDOWNLOAD_BODY_MPI_MODEL:Bool=ON \
