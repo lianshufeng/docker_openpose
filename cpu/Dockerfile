@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as builder
+FROM ubuntu:22.04 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y && \
@@ -39,22 +39,22 @@ RUN make -j$((`nproc`+1))
 
 # RUN apt-get remove wget unzip cmake git build-essential -y && apt-get autoremove -y
 
-FROM ubuntu:20.04 as runtime
+FROM ubuntu:22.04 as runtime
 ENV DEBIAN_FRONTEND=noninteractive
 COPY --from=builder /openpose/models /openpose/models
 COPY --from=builder /openpose/build /openpose/build
 
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-        libopencv-dev \
-        protobuf-compiler \
-        libprotobuf-dev \
-        libgoogle-glog-dev \
-        libboost-all-dev \
-        hdf5-tools \
-        libhdf5-dev \
-        libatlas-base-dev
+# RUN apt-get update -y && \
+    # apt-get upgrade -y && \
+    # apt-get install -y \
+        # libopencv-dev \
+        # protobuf-compiler \
+        # libprotobuf-dev \
+        # libgoogle-glog-dev \
+        # libboost-all-dev \
+        # hdf5-tools \
+        # libhdf5-dev \
+        # libatlas-base-dev
 		
 WORKDIR /openpose
 
