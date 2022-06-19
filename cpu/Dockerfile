@@ -44,17 +44,20 @@ ENV DEBIAN_FRONTEND=noninteractive
 COPY --from=builder /openpose/models /openpose/models
 COPY --from=builder /openpose/build /openpose/build
 
-# RUN apt-get update -y && \
-    # apt-get upgrade -y && \
-    # apt-get install -y \
-        # libopencv-dev \
-        # protobuf-compiler \
-        # libprotobuf-dev \
-        # libgoogle-glog-dev \
-        # libboost-all-dev \
-        # hdf5-tools \
-        # libhdf5-dev \
-        # libatlas-base-dev
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+        libopencv-dev \
+        protobuf-compiler \
+        libprotobuf-dev \
+        libgoogle-glog-dev \
+        libboost-all-dev \
+        hdf5-tools \
+        libhdf5-dev \
+        libatlas-base-dev \
+		build-essential -y && \
+	apt-get clean -y && \
+	apt-get autoremove -y
 		
 WORKDIR /openpose
 
