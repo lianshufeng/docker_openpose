@@ -4,7 +4,7 @@ FROM nvidia/cuda:11.0.3-cudnn8-devel-ubuntu20.04 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 #get deps
-RUN apt-get update && \
+RUN apt-get update -y && \
 	apt-get install -y --no-install-recommends \
 	git g++ wget make cmake \
 	python3-dev python3-pip python3-setuptools libprotobuf-dev protobuf-compiler libopencv-dev libgoogle-glog-dev libboost-all-dev libcaffe-cuda-dev libhdf5-dev libatlas-base-dev
@@ -47,7 +47,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 COPY --from=builder /openpose /openpose
 
 
-RUN apt-get update && \
+RUN apt-get update -y && \
 	apt-get install -y --no-install-recommends \
 	python3-dev python3-pip python3-setuptools libprotobuf-dev protobuf-compiler libopencv-dev libgoogle-glog-dev libboost-all-dev libcaffe-cuda-dev libhdf5-dev libatlas-base-dev
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
