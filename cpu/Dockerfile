@@ -2,7 +2,6 @@ FROM ubuntu:22.04 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y && \
-    apt-get upgrade -y && \
     apt-get install -y \
         wget apt-utils lsb-core cmake git \
         libopencv-dev \
@@ -45,7 +44,6 @@ COPY --from=builder /openpose/models /openpose/models
 COPY --from=builder /openpose/build /openpose/build
 
 RUN apt-get update -y && \
-    apt-get upgrade -y && \
     apt-get install -y \
         libopencv-dev \
         protobuf-compiler \
