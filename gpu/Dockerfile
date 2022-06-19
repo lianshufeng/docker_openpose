@@ -21,7 +21,8 @@ RUN pip3 install --upgrade pip && pip3 install numpy opencv-python
 # ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
 
 #get openpose
-WORKDIR /openpose
+RUN rm -rf /openpose
+WORKDIR /
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git .
 
 #build it
