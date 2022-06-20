@@ -45,7 +45,7 @@ RUN cmake -DBUILD_PYTHON=ON .. && make -j `nproc`
 # RUN apt-get remove wget unzip cmake git build-essential -y && apt-get autoremove -y
 
 # 运行环境
-FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu18.04 as runtime
+FROM nvidia/cuda:11.0.3-cudnn8-devel-ubuntu18.04 as runtime
 ENV DEBIAN_FRONTEND=noninteractive
 
 
