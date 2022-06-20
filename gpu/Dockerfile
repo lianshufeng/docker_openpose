@@ -3,6 +3,7 @@
 FROM nvidia/cuda:11.0.3-cudnn8-devel-ubuntu18.04 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 #get deps
 RUN apt-get update -y && \
 	apt-get install -y --no-install-recommends \
@@ -14,12 +15,9 @@ RUN apt-get update -y && \
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
 
 
-# replace cmake as old version has CUDA variable bugs
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz && \
-	tar xzf cmake-3.22.5-Linux-x86_64.tar.gz -C /opt && \
-	chrome -R 777 /opt/cmake-3.22.5-Linux-x86_64 && \
-	rm -rf cmake-3.22.5-Linux-x86_64.tar.gz
-ENV PATH="/opt/cmake-3.22.5-Linux-x86_64/bin:${PATH}"
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz -O /opt/cmake.tar.gz
+RUN cd /opt/ && pwd && tar xzvf cmake.tar.gz && ls &&  /opt/cmake-3.22.5-linux-x86_64/bin/cmake -version && rm -rf cmake.tar.gz
+ENV PATH="/opt/cmake-3.22.5-linux-x86_64/bin/:${PATH}"
 
 
 
@@ -47,6 +45,9 @@ RUN cmake -DBUILD_PYTHON=ON .. && make -j `nproc`
 # 运行环境
 FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu18.04 as runtime
 ENV DEBIAN_FRONTEND=noninteractive
+
+
+
 COPY --from=builder /openpose /openpose
 
 # python
@@ -57,11 +58,10 @@ RUN apt-get update -y && \
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
 
 # replace cmake as old version has CUDA variable bugs
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz && \
-	tar xzf cmake-3.22.5-Linux-x86_64.tar.gz -C /opt && \
-	chrome -R 777 /opt/cmake-3.22.5-Linux-x86_64 && \
-	rm -rf cmake-3.22.5-Linux-x86_64.tar.gz
-ENV PATH="/opt/cmake-3.22.5-Linux-x86_64/bin:${PATH}"
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz -O /opt/cmake.tar.gz
+RUN cd /opt/ && pwd && tar xzvf cmake.tar.gz && ls &&  /opt/cmake-3.22.5-linux-x86_64/bin/cmake -version && rm -rf cmake.tar.gz
+ENV PATH="/opt/cmake-3.22.5-linux-x86_64/bin/:${PATH}"
+
 
 
 # 安装python环境
