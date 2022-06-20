@@ -17,6 +17,7 @@ RUN pip3 install --upgrade pip && pip3 install numpy opencv-python
 # replace cmake as old version has CUDA variable bugs
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz && \
 	tar xzf cmake-3.22.5-Linux-x86_64.tar.gz -C /opt && \
+	chrome -R 777 /opt/cmake-3.22.5-Linux-x86_64 && \
 	rm -rf cmake-3.22.5-Linux-x86_64.tar.gz
 ENV PATH="/opt/cmake-3.22.5-Linux-x86_64/bin:${PATH}"
 
@@ -55,11 +56,13 @@ RUN apt-get update -y && \
 	python3-dev python3-pip python3-setuptools libprotobuf-dev protobuf-compiler libopencv-dev libgoogle-glog-dev libboost-all-dev libcaffe-cuda-dev libhdf5-dev libatlas-base-dev
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
 
-# cmake
+# replace cmake as old version has CUDA variable bugs
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz && \
 	tar xzf cmake-3.22.5-Linux-x86_64.tar.gz -C /opt && \
+	chrome -R 777 /opt/cmake-3.22.5-Linux-x86_64 && \
 	rm -rf cmake-3.22.5-Linux-x86_64.tar.gz
 ENV PATH="/opt/cmake-3.22.5-Linux-x86_64/bin:${PATH}"
+
 
 # 安装python环境
 WORKDIR /openpose/build/python/openpose
