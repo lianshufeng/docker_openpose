@@ -51,6 +51,7 @@ COPY --from=builder /openpose /openpose
 # python
 RUN apt-get update -y && \
 	apt-get install -y --no-install-recommends \
+	git g++ wget make \
 	python3-dev python3-pip python3-setuptools libprotobuf-dev protobuf-compiler libopencv-dev libgoogle-glog-dev libboost-all-dev libcaffe-cuda-dev libhdf5-dev libatlas-base-dev
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
 
