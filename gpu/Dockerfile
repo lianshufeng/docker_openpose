@@ -1,6 +1,6 @@
 # https://github.com/lianshufeng/docker_openpose
 #FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu18.04
-FROM nvidia/cuda:11.0.3-cudnn8-devel-ubuntu18.04 as builder
+FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu18.04 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 
