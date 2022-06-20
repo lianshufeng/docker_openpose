@@ -15,9 +15,11 @@ RUN apt-get update -y && \
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
 
 
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz -O /opt/cmake.tar.gz
-RUN cd /opt/ && pwd && tar xzvf cmake.tar.gz && ls &&  /opt/cmake-3.22.5-linux-x86_64/bin/cmake -version && rm -rf cmake.tar.gz
-ENV PATH="/opt/cmake-3.22.5-linux-x86_64/bin/:${PATH}"
+# replace cmake as old version has CUDA variable bugs
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
+	tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
+	rm cmake-3.16.0-Linux-x86_64.tar.gz
+ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
 
 
 
@@ -58,9 +60,10 @@ RUN apt-get update -y && \
 RUN pip3 install --upgrade pip && pip3 install numpy opencv-python 
 
 # replace cmake as old version has CUDA variable bugs
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-Linux-x86_64.tar.gz -O /opt/cmake.tar.gz
-RUN cd /opt/ && pwd && tar xzvf cmake.tar.gz && ls &&  /opt/cmake-3.22.5-linux-x86_64/bin/cmake -version && rm -rf cmake.tar.gz
-ENV PATH="/opt/cmake-3.22.5-linux-x86_64/bin/:${PATH}"
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.tar.gz && \
+	tar xzf cmake-3.16.0-Linux-x86_64.tar.gz -C /opt && \
+	rm cmake-3.16.0-Linux-x86_64.tar.gz
+ENV PATH="/opt/cmake-3.16.0-Linux-x86_64/bin:${PATH}"
 
 
 
