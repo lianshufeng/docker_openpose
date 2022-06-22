@@ -24,17 +24,17 @@ RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git .
 
 #build it
 
-WORKDIR /openpose/build
-RUN cmake -DOWNLOAD_BODY_25_MODEL:Bool=ON \
-          -DDOWNLOAD_BODY_MPI_MODEL:Bool=ON \
-          -DDOWNLOAD_BODY_COCO_MODEL:Bool=ON \
-          -DDOWNLOAD_FACE_MODEL:Bool=ON \
-          -DDOWNLOAD_HAND_MODEL:Bool=ON \
-		  --DBUILD_PYTHON=ON \
-          .. && \
-		  make -j `nproc`
 # WORKDIR /openpose/build
-# RUN cmake -DBUILD_PYTHON=ON .. && make -j `nproc`
+# RUN cmake -DOWNLOAD_BODY_25_MODEL:Bool=ON \
+          # -DDOWNLOAD_BODY_MPI_MODEL:Bool=ON \
+          # -DDOWNLOAD_BODY_COCO_MODEL:Bool=ON \
+          # -DDOWNLOAD_FACE_MODEL:Bool=ON \
+          # -DDOWNLOAD_HAND_MODEL:Bool=ON \
+		  # --DBUILD_PYTHON=ON \
+          # .. && \
+		  # make -j `nproc`
+WORKDIR /openpose/build
+RUN cmake -DBUILD_PYTHON=ON .. && make -j `nproc`
 WORKDIR /openpose
 
 
